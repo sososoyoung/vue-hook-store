@@ -1,14 +1,15 @@
 {
   "name": "vue-hook-store",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "keywords": [
-    "vue3",
-    "reactive",
-    "store"
+    "vue2",
+    "composition-api",
+    "store",
+    "hook"
   ],
   "author": "Jason <shty1990@163.com>",
   "repository": {
