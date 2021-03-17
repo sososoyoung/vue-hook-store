@@ -21,7 +21,7 @@ export const createModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extend
     });
   };
 
-  return () => {
+  return (_option?: Opt) => {
     if (store.has(fn)) {
       const item = store.get(fn);
       item.count++;
@@ -30,7 +30,7 @@ export const createModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extend
       return item.instance as ReturnType<Fn>;
     }
 
-    const instance = fn(option);
+    const instance = fn(_option || option);
 
     const item = {
       fn,
