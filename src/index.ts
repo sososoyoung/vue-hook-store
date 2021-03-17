@@ -7,7 +7,7 @@ interface Item<Fn extends VoidFunction> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const creatModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extends any>(fn: Fn, option?: Opt) => {
+export const createModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extends any>(fn: Fn, option?: Opt) => {
   const removeItem = (item: Item<Fn>) => {
     item.fn && store.delete(item.fn);
   };
@@ -20,6 +20,7 @@ export const creatModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extends
       }
     });
   };
+
   return () => {
     if (store.has(fn)) {
       const item = store.get(fn);
