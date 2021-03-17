@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -d",
-    "publish": "yarn build && npm publish .",
+    "new-publish": "yarn build && npm publish .",
     "test": "jest"
   },
   "peerDependencies": {
