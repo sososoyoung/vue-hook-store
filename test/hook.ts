@@ -10,4 +10,6 @@ const testHook = (starNumber = 0) => {
   return { count, add };
 };
 
-export const testHookModel = createModel(testHook, 1);
+export const testHookModel = createModel(testHook);
+
+testHookModel();

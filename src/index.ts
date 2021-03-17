@@ -1,46 +1,53 @@
 import { onBeforeUnmount } from "@vue/composition-api";
-const store = new WeakMap();
-interface Item<Fn extends VoidFunction> {
+
+type ParamType<T> = T extends (param: infer P) => any ? P : T;
+interface CacheModel<Fn extends VoidFunction> {
+  fn: Fn;
   count: number;
-  fn?: Fn | null;
-  instance?: ReturnType<Fn>;
+  instance: ReturnType<Fn>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createModel = <Fn extends (opt?: Opt) => ReturnType<Fn>, Opt extends any>(fn: Fn, option?: Opt) => {
-  const removeItem = (item: Item<Fn>) => {
-    item.fn && store.delete(item.fn);
+const store = new Map<number, any>();
+const cacheConfig = {
+  keyIndex: 0,
+};
+
+export const createModel = <Fn extends (opt?: any) => ReturnType<Fn>>(fn: Fn, option?: ParamType<Fn>) => {
+  const _key = ++cacheConfig.keyIndex;
+
+  const removeItem = () => {
+    store.delete(_key);
   };
 
-  const onLeave = (item: Item<Fn>) => {
+  const listenOnLeave = (item: CacheModel<Fn>) => {
     onBeforeUnmount(() => {
       item.count--;
       if (item.count < 1) {
-        removeItem(item);
+        removeItem();
       }
     });
   };
 
-  return (_option?: Opt) => {
-    if (store.has(fn)) {
-      const item = store.get(fn);
+  return (_option?: ParamType<Fn>) => {
+    if (store.has(_key)) {
+      const item: CacheModel<Fn> = store.get(_key);
       item.count++;
 
-      onLeave(item);
-      return item.instance as ReturnType<Fn>;
+      listenOnLeave(item);
+      return item.instance;
     }
 
     const instance = fn(_option || option);
 
-    const item = {
+    const item: CacheModel<Fn> = {
       fn,
       instance,
       count: 1,
     };
 
-    store.set(fn, item);
-    onLeave(item);
+    store.set(_key, item);
+    listenOnLeave(item);
 
-    return instance as ReturnType<Fn>;
+    return instance;
   };
 };
