@@ -1,5 +1,5 @@
 import { ref } from "@vue/composition-api";
-import { createModel } from "../src";
+import { createModel, createProvideModel } from "../src";
 
 const testHook = (starNumber = 0) => {
   const count = ref(starNumber);
@@ -10,6 +10,7 @@ const testHook = (starNumber = 0) => {
   return { count, add };
 };
 
-export const testHookModel = createModel(testHook);
+export const testHookModel = createProvideModel(testHook);
 
-testHookModel();
+// or
+// export const testHookModel = createModel(testHook);
