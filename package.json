@@ -1,7 +1,9 @@
 {
   "name": "vue-hook-store",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "main": "dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -22,17 +24,17 @@
   "homepage": "https://github.com/sososoyoung/vue-hook-store#readme",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -d",
+    "build": "rimraf dist && rollup -c",
     "new-publish": "yarn build && npm publish .",
     "test": "jest"
   },
   "peerDependencies": {
-    "vue": "^2.6.0",
-    "@vue/composition-api": "^1.0.0-beta.14"
+    "@vue/composition-api": "^1.0.0-beta.14",
+    "vue": "^2.6.0"
   },
   "dependencies": {
-    "vue": "^2.6.0",
-    "@vue/composition-api": "^1.0.0-beta.14"
+    "@vue/composition-api": "^1.0.0-beta.14",
+    "vue": "^2.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -41,6 +43,13 @@
     "@types/jest": "^26.0.15",
     "babel-jest": "^26.6.1",
     "jest": "^26.6.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^1.20.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-typescript2": "^0.24.0",
+    "rollup-plugin-visualizer": "^2.5.4",
     "ts-node": "^9.0.0",
     "typescript": "^3.9.0"
   }
