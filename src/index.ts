@@ -1,3 +1,4 @@
+import 'core-js/features/map';
 import { onBeforeUnmount, inject, provide } from "@vue/composition-api";
 
 type ParamType<T> = T extends (option: infer P) => any ? P : T;
