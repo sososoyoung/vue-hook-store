@@ -1,4 +1,3 @@
-import 'core-js/features/map';
 import { onBeforeUnmount } from "@vue/composition-api";
 import { ParamType } from "../types";
 
@@ -12,7 +11,7 @@ interface CacheModel<Fn extends VoidFunction> {
   instance: CacheModelInstance<Fn>;
 }
 
-const STORE = new Map<number, any>();
+const STORE: Record<number, CacheModel<any>> = {};
 const CACHE_CONFIG = {
   keyIndex: 0,
 };
@@ -28,7 +27,7 @@ export const createModel = <Fn extends (opt?: any) => ReturnType<Fn>>(fn: Fn, op
   const _key = ++CACHE_CONFIG.keyIndex;
 
   const removeItem = () => {
-    STORE.delete(_key);
+    delete STORE[_key];
   };
 
   const onLeave = (item: CacheModel<Fn>) => {
@@ -41,8 +40,8 @@ export const createModel = <Fn extends (opt?: any) => ReturnType<Fn>>(fn: Fn, op
   };
 
   return (_option?: ParamType<Fn>) => {
-    if (STORE.has(_key)) {
-      const item: CacheModel<Fn> = STORE.get(_key);
+    if (STORE[_key]) {
+      const item: CacheModel<Fn> = STORE[_key];
       item.count++;
 
       onBeforeUnmount(onLeave(item));
@@ -58,7 +57,7 @@ export const createModel = <Fn extends (opt?: any) => ReturnType<Fn>>(fn: Fn, op
       count: 1,
     };
 
-    STORE.set(_key, item);
+    STORE[_key] = item;
     onBeforeUnmount(onLeave(item));
 
     return instance;
